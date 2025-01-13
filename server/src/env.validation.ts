@@ -19,6 +19,9 @@ export class EnvironmentVariables {
   @IsEnum(Environment)
   NODE_ENV: Environment;
 
+  @IsString()
+  DB_TYPE: string;
+
   @IsNumber()
   @Min(0)
   @Max(65535)
