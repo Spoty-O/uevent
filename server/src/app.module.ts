@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { validate } from './env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmConfigService } from './env.service';
 // import { ApiConfigService } from './env.service';
 
 @Module({
@@ -12,10 +13,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       validate,
     }),
     TypeOrmModule.forRootAsync({
-      // inject: [ApiConfigService],
-      // useFactory: (conf: ApiConfigService): TypeOrmModuleOptions => ({
-      //   conf.,
-      // }),
+      useClass: TypeOrmConfigService,
+      inject: [ConfigService],
     }),
   ],
   // providers: [ApiConfigService],

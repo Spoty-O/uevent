@@ -1,27 +1,7 @@
 import { plainToInstance } from 'class-transformer';
-import {
-  IsEnum,
-  IsNumber,
-  IsString,
-  Max,
-  Min,
-  validateSync,
-} from 'class-validator';
-
-enum Environment {
-  Development = 'development.local',
-  Production = 'production.local',
-  //   Test = 'test',
-  //   Provision = 'provision',
-}
+import { IsNumber, IsString, Max, Min, validateSync } from 'class-validator';
 
 export class EnvironmentVariables {
-  @IsEnum(Environment)
-  NODE_ENV: Environment;
-
-  @IsString()
-  DB_TYPE: string;
-
   @IsNumber()
   @Min(0)
   @Max(65535)
