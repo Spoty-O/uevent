@@ -9,9 +9,10 @@ describe('UserService', () => {
   let service: UserService;
   let dataSource: DataSource;
   let userRepository: Repository<User>;
+  let manager: EntityManager;
 
   const entityManagerMock: Partial<EntityManager> = {
-    findOneBy: jest.fn().mockReturnValue(null),
+    findOneBy: jest.fn(),
     save: jest.fn().mockReturnValue({ id: 1 }),
   };
 
@@ -51,6 +52,7 @@ describe('UserService', () => {
     service = module.get<UserService>(UserService);
     dataSource = module.get<DataSource>(DataSource);
     userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+    manager = dataSource.createQueryRunner().manager;
   });
 
   it('should be defined', () => {
@@ -58,6 +60,7 @@ describe('UserService', () => {
   });
 
   it('should create user', async () => {
+    jest.spyOn(manager, 'findOneBy').mockResolvedValue({ id: 1 });
     const res = await service.create(dto);
     expect(res).toEqual('User created with id 1');
   });
