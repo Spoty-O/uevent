@@ -59,5 +59,18 @@ describe('UserController', () => {
         dto,
       );
     });
+
+    it.failing('shoud`t call create method of service', async () => {
+      dto.password = '123';
+      const obj: ArgumentMetadata = {
+        type: 'body',
+        data: JSON.stringify(dto),
+        metatype: CreateUserDto,
+      };
+      // controller.create(dto);
+      expect(controller.create(await validation.transform(dto, obj))).toEqual(
+        dto,
+      );
+    });
   });
 });
