@@ -3,10 +3,13 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ValidationPipe } from '../pipes/validation.pipe';
+import { ArgumentMetadata } from '@nestjs/common';
 
 describe('UserController', () => {
   let controller: UserController;
-  let service: UserService;
+  // let service: UserService;
+  let validation: ValidationPipe;
 
   const userServiceMock = {
     create: jest.fn((dto: CreateUserDto) => {
@@ -31,7 +34,8 @@ describe('UserController', () => {
     }).compile();
 
     controller = module.get<UserController>(UserController);
-    service = module.get<UserService>(UserService);
+    // service = module.get<UserService>(UserService);
+    validation = new ValidationPipe();
   });
 
   it('should be defined', () => {
@@ -39,15 +43,21 @@ describe('UserController', () => {
   });
 
   describe('create route', () => {
-    let dto = new CreateUserDto();
-    dto = {
+    const dto: CreateUserDto = {
       email: 'opa@gm.com',
-      password: '4353QWdsa_1243ldf',
+      password: '1234562314er_dsrfASD',
       username: 'papapap',
     };
-    it('should call create method of service', () => {
-      controller.create(dto);
-      expect(service.create).toHaveBeenCalledWith(dto);
+    it('should call create method of service', async () => {
+      const obj: ArgumentMetadata = {
+        type: 'body',
+        data: JSON.stringify(dto),
+        metatype: CreateUserDto,
+      };
+      // controller.create(dto);
+      expect(controller.create(await validation.transform(dto, obj))).toEqual(
+        dto,
+      );
     });
   });
 });
