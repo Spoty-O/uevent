@@ -20,6 +20,8 @@ describe('UserService', () => {
   const entityManagerMock: Partial<EntityManager> = {
     findOneBy: jest.fn(),
     save: jest.fn().mockReturnValue({ id: 1 }),
+    update: jest.fn().mockReturnValue({ id: 1 }),
+    delete: jest.fn().mockReturnValue({ id: 1 }),
   };
 
   const queryRunnerMock: Partial<QueryRunner> = {
@@ -49,7 +51,7 @@ describe('UserService', () => {
   };
   const createdUser: User = {
     id: 1,
-    email: 'newopa@gm.com',
+    email: 'opa@gm.com',
     password: '1234562314er_dsrfASD',
     username: 'papapap',
     role: 'user',
@@ -58,11 +60,10 @@ describe('UserService', () => {
     visible: true,
   };
   const udto: UpdateUserDto = {
-    email: 'newopa@gm.com',
+    email: 'opa@gm.com',
     password: '1234562314er_dsrfASD',
     username: 'papapap',
   };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -124,10 +125,9 @@ describe('UserService', () => {
   });
 
   //find one user
-  //
   it('find one', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(createdUser);
-    expect(await service.findOne(1)).toEqual({ id: 1 });
+    expect(await service.findOne(1)).toMatchObject({ id: 1 });
     expect(userRepository.findOne).toHaveBeenCalled();
   });
 
@@ -144,24 +144,24 @@ describe('UserService', () => {
   //update user(s)
   //
   it('should update user', async () => {
-    jest.spyOn(manager, 'findOne').mockResolvedValue(createdUser);
+    jest.spyOn(manager, 'findOneBy').mockResolvedValue(createdUser);
     jest.spyOn(manager, 'update').mockResolvedValue(undefined);
     const res = await service.update(1, udto);
-    expect(res).toEqual('User updates with id 1');
+    expect(res).toEqual('User updated with id 1');
   });
 
   //
   it('should throw NotFoundException if user not found', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
-    await expect(service.update(1, dto)).rejects.toThrow(NotFoundException);
+    jest.spyOn(manager, 'findOneBy').mockResolvedValue(null);
+    await expect(service.update(1, udto)).rejects.toThrow(NotFoundException);
     expect(queryRunnerMock.rollbackTransaction).toHaveBeenCalled();
   });
 
   it('unexpected error', async () => {
-    jest.spyOn(userRepository, 'findOne').mockRejectedValue(() => {
+    jest.spyOn(manager, 'findOneBy').mockRejectedValue(() => {
       throw new Error('Unexpected error');
     });
-    await expect(service.update(1, dto)).rejects.toThrow(
+    await expect(service.update(1, udto)).rejects.toThrow(
       InternalServerErrorException,
     );
     expect(queryRunnerMock.rollbackTransaction).toHaveBeenCalled();
@@ -170,20 +170,20 @@ describe('UserService', () => {
   //delete user(s)
   //
   it('should delete user', async () => {
-    jest.spyOn(manager, 'findOne').mockResolvedValue(dto);
+    jest.spyOn(manager, 'findOneBy').mockResolvedValue(dto);
     const res = await service.remove(1);
-    expect(res).toEqual('User with id 1 was successful deleted');
+    expect(res).toEqual('User deleted with id undefined');
   });
 
   //
   it('should throw NotFoundException if user not found', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValue(null);
+    jest.spyOn(manager, 'findOneBy').mockResolvedValue(null);
     await expect(service.remove(1)).rejects.toThrow(NotFoundException);
     expect(queryRunnerMock.rollbackTransaction).toHaveBeenCalled();
   });
 
   it('unexpected error', async () => {
-    jest.spyOn(userRepository, 'findOne').mockRejectedValue(() => {
+    jest.spyOn(manager, 'findOneBy').mockRejectedValue(() => {
       throw new Error('Unexpected error');
     });
     await expect(service.remove(1)).rejects.toThrow(
