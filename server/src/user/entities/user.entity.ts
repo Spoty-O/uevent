@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Company } from 'src/company/entities/company.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -25,4 +32,8 @@ export class User {
 
   @Column({ default: true })
   visible: boolean;
+
+  @OneToOne(() => Company)
+  @JoinColumn()
+  company: Company;
 }
