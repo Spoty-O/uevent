@@ -17,7 +17,7 @@ export class Company {
   @Column({ default: 'default.jpg' })
   picturePath: string;
 
-  @Column()
+  @Column({ default: false })
   approved: boolean;
 
   @Column({ type: 'float' })
