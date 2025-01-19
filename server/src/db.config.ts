@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EnvironmentVariables } from './env.validation';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
+import { User } from './user/entities/user.entity';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -14,7 +15,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       username: this.configService.get('POSTGRES_USER'),
       password: this.configService.get('POSTGRES_PASSWORD'),
       database: this.configService.get('POSTGRES_DB'),
+      entities: [User],
       applicationName: 'uevent',
+      synchronize: true,
     };
   }
 }

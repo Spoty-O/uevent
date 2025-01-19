@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeOrmConfigService } from './env.service';
-// import { ApiConfigService } from './env.service';
+import { TypeOrmConfigService } from './db.config';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -14,10 +14,8 @@ import { TypeOrmConfigService } from './env.service';
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfigService,
-      inject: [ConfigService],
     }),
+    UserModule,
   ],
-  // providers: [ApiConfigService],
-  // exports: [ApiConfigService],
 })
 export class AppModule {}
