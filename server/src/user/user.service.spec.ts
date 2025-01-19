@@ -49,6 +49,7 @@ describe('UserService', () => {
     password: '1234562314er_dsrfASD',
     username: 'papapap',
   };
+
   const createdUser: User = {
     id: 1,
     email: 'opa@gm.com',
@@ -59,11 +60,13 @@ describe('UserService', () => {
     confirmed: false,
     visible: true,
   };
+
   const udto: UpdateUserDto = {
     email: 'opa@gm.com',
     password: '1234562314er_dsrfASD',
     username: 'papapap',
   };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -87,8 +90,7 @@ describe('UserService', () => {
   it('should create user', async () => {
     jest.spyOn(manager, 'findOneBy').mockResolvedValue(null);
     jest.spyOn(manager, 'save').mockResolvedValue({ id: 1 });
-    const res = await service.create(dto);
-    expect(res).toEqual('User created with id 1');
+    expect(service.create(dto)).resolves.toEqual('User created with id 1');
   });
 
   it('user already exists', async () => {
@@ -110,7 +112,7 @@ describe('UserService', () => {
   //find all user
   it('find all an array of users', async () => {
     jest.spyOn(userRepository, 'find').mockResolvedValue([]);
-    expect(await service.findAll()).toEqual([]);
+    await expect(service.findAll()).resolves.toEqual([]);
     expect(userRepository.find).toHaveBeenCalled();
   });
 
@@ -127,7 +129,7 @@ describe('UserService', () => {
   //find one user
   it('find one', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValue(createdUser);
-    expect(await service.findOne(1)).toMatchObject({ id: 1 });
+    await expect(service.findOne(1)).resolves.toMatchObject({ id: 1 });
     expect(userRepository.findOne).toHaveBeenCalled();
   });
 
@@ -146,8 +148,9 @@ describe('UserService', () => {
   it('should update user', async () => {
     jest.spyOn(manager, 'findOneBy').mockResolvedValue(createdUser);
     jest.spyOn(manager, 'update').mockResolvedValue(undefined);
-    const res = await service.update(1, udto);
-    expect(res).toEqual('User updated with id 1');
+    await expect(service.update(1, udto)).resolves.toEqual(
+      'User updated with id 1',
+    );
   });
 
   //
@@ -171,8 +174,9 @@ describe('UserService', () => {
   //
   it('should delete user', async () => {
     jest.spyOn(manager, 'findOneBy').mockResolvedValue(dto);
-    const res = await service.remove(1);
-    expect(res).toEqual('User deleted with id undefined');
+    await expect(service.remove(1)).resolves.toEqual(
+      'User deleted with id undefined',
+    );
   });
 
   //
