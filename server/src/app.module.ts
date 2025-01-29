@@ -4,6 +4,7 @@ import { validate } from './env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './db.config';
 import { UserModule } from './user/user.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { UserModule } from './user/user.module';
       useClass: TypeOrmConfigService,
     }),
     UserModule,
+    CompanyModule,
   ],
 })
 export class AppModule {}
