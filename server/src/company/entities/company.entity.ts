@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Event } from 'src/event/entities/event.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Company {
@@ -25,4 +26,7 @@ export class Company {
 
   @Column({ type: 'float' })
   longitude: number;
+
+  @OneToMany(() => Event, (event) => event.user)
+  company: Event[];
 }
