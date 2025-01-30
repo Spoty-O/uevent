@@ -27,6 +27,8 @@ export class Company {
   @Column({ type: 'float' })
   longitude: number;
 
-  @OneToMany(() => Event, (event) => event.user)
-  company: Event[];
+  @OneToMany(() => Event, (event) => event.company, {
+    cascade: true,
+  })
+  events: Event[];
 }
