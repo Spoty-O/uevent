@@ -1,6 +1,7 @@
 import { Company } from 'src/company/entities/company.entity';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
+@Entity()
 export class Event {
   @PrimaryGeneratedColumn()
   id: number;
