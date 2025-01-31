@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Company {
@@ -25,4 +32,8 @@ export class Company {
 
   @Column({ type: 'float' })
   longitude: number;
+
+  @OneToOne(() => User, (user) => user.company)
+  @JoinColumn()
+  user: User;
 }
