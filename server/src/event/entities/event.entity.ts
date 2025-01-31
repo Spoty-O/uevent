@@ -1,5 +1,11 @@
 import { Company } from 'src/company/entities/company.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Event {
@@ -21,8 +27,12 @@ export class Event {
   @Column({ type: 'float' })
   longitude: number;
 
+  @Column({ name: 'companyId' }) //without this, companyId is null
+  companyId: number;
+
   @ManyToOne(() => Company, (company) => company.events, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'companyId' })
   company: Company;
 }

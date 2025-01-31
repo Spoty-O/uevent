@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -16,7 +17,7 @@ export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
+  create(@Body(new ValidationPipe()) createEventDto: CreateEventDto) {
     return this.eventService.create(createEventDto);
   }
 
