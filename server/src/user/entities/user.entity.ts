@@ -28,5 +28,5 @@ export class User {
   visible: boolean;
 
   @OneToOne(() => Company, (company) => company.user, { cascade: true })
-  company: Company;
+  company?: Company;
 }
