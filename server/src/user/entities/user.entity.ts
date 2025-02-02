@@ -6,7 +6,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ unique: true, nullable: false, length: 50 })
   username: string;
 
   @Column({ unique: true, nullable: false })
@@ -18,7 +18,7 @@ export class User {
   @Column({ enum: ['user', 'admin'], default: 'user' })
   role: 'user' | 'admin';
 
-  @Column({ default: 'default.jpg' })
+  @Column({ default: '/public/default_company_img.gif' })
   picturePath: string;
 
   @Column({ default: false })
