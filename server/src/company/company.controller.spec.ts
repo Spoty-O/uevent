@@ -21,6 +21,11 @@ describe('CompanyController', () => {
     name: 'Company',
   };
 
+  const upddto: UpdateCompanyDto = {
+    email: 'opa1@gm.com',
+    name: 'Company1',
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CompanyController],
@@ -54,10 +59,6 @@ describe('CompanyController', () => {
   });
 
   it('update company data', async () => {
-    const upddto: UpdateCompanyDto = {
-      email: 'opa1@gm.com',
-      name: 'Company1',
-    };
     expect(controller.update(1, upddto)).toEqual('Company updated with id 1');
     expect(service.update).toHaveBeenCalledTimes(1);
     expect(upddto).toMatchSnapshot();
